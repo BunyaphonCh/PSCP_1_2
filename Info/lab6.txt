@@ -1,0 +1,582 @@
+Lab 06.01 - Student Class
+
+Timeout: 1 second
+Memory Limit: 32000 bytes
+
+นายปิ๊ก (หนึ่งในทีมนักพัฒนาแล้วแต่แอพ) ต้องการจะเพิ่มฟีเจอร์ในการเก็บข้อมูลด้วยการ Hasing ให้กับนักศึกษาคณะ IT ที่มาใช้บริการสั่งอาหารผ่านแอพพลิเคชั่นสั่งอาหารบนโทรศัพท์มือถือตัวใหม่มีชื่อว่า "แล้วแต่แอพ"
+นายปิ๊กอยากได้คลาสที่ชื่อว่า Student ขึ้นมาโดยที่คลาสนี้จะเก็บข้อมูลของนักศึกษาคณะเทคโนโลยีสารสนเทศ
+
+Attributes (คุณลักษณะ) ได้แก่
+std_id: รหัสนักศึกษา
+name: ชื่อจริงและนามสกุล
+
+gpa: เกรดเฉลี่ย (GPA)
+Methods (เมธอด) ได้แก่
+Getter ของ Attribute ทั้งหมด
+print_details() มีรูปแบบดังนี้
+ID:
+Name:
+GPA: // ทศนิยม 2 ตำแหน่ง เช่น 4.00
+
+ในการรับเข้าข้อมูล นายปิ๊กจะให้ข้อมูลมาเป็น String ในรูปแบบ JSON ดังตัวอย่างด้านล่างและให้แสดงผลลัพธ์ผ่านการเรียกเมธอด print_details()
+{"ID": 68070072, "Name": "Theerawat Russamewikai", "GPA": 3.62}
+{"ID": 68070076, "Name": "Noppadon Duangchairakkasem", "GPA": 3.00}
+{"ID": 68070077, "Name": "Napon Narkphan", "GPA": 2.75}
+นายปิ๊กจึงไปบอกละอองดาว ให้ละอองดาวเขียนโปรแกรมสร้างคลาส Student ให้หน่อย นายปิ๊กเห็นว่าละอองดาวนั้นงานเยอะ
+
+def main(text_in):
+    import json
+    std_in = json.loads(text_in)
+    std = Student(std_in["ID"], std_in["Name"], std_in["GPA"])
+    std.print_details()
+
+main(input())
+Input Specification
+1 บรรทัด
+
+ช้อมูลในรูปแบบ JSON
+
+Output Specification
+3 บรรทัด
+
+ผลลัพธ์จากการเรียกเมธอด print_details()
+
+Testcase 1
+input : 
+{"ID": 68070072, "Name": "Theerawat Russamewikai", "GPA": 3.62}
+output : 
+ID: 68070072
+Name: Theerawat Russamewikai
+GPA: 3.62
+Testcase 2
+input : 
+{"ID": 68070076, "Name": "Noppadon Duangchairakkasem", "GPA": 3.00}
+output : 
+ID: 68070076
+Name: Noppadon Duangchairakkasem
+GPA: 3.00
+Testcase 3
+input : 
+{"ID": 68070077, "Name": "Napon Narkphan", "GPA": 2.75}
+output : 
+ID: 68070077
+Name: Napon Narkphan
+GPA: 2.75
+
+-------------------------------------------------------------------------------------------------------
+Lab 06.02 - ProbHash Hashing
+
+Timeout: 1 second
+Memory Limit: 32000 bytes
+
+นายปิ๊ก (หนึ่งในทีมนักพัฒนาแล้วแต่แอพ) ต้องการจะเพิ่มฟีเจอร์ในการเก็บข้อมูลด้วยการ Hasing ให้กับนักศึกษาคณะ IT ที่มาใช้บริการสั่งอาหารผ่านแอพพลิเคชั่นสั่งอาหารบนโทรศัพท์มือถือตัวใหม่มีชื่อว่า "แล้วแต่แอพ"
+
+เมื่อละอองดาวสร้างคลาส Student เสร็จ เธอได้ส่งโค้ดให้นายปิ๊กและไปทำการทดลองหาค่าเฉลี่ยของละอองฝุ่นในแต่ละวันต่อ นายปิ๊กรู้สึกดีใจมากที่ได้คลาส Student จากละอองดาว แต่ว่าฟีเจอร์แล้วแต่แอพนี้ยังไม่เสร็จสมบูรณ์ ยังขาดคลาส ProbHash ที่ทำหน้าที่เป็น Hash Table
+
+นายปิ๊กจึงไปร่วมมือกับส้มฉุนเพื่อสร้างคลาส ProbHash ขึ้นมาโดยคลาสนี้จะมี attribute เป็น
+ตารางแฮช (hash_table): เป็นลิสต์ที่เก็บข้อมูลออบเจ็กต์นักเรียน (Student) ได้ n คน
+ขนาดข้อมูล (size): ของตารางแฮช (ขนาดทั้งหมด ไม่ใช่ขนาดของข้อมูลที่ถูกเก็บไว้ในลิสต์)
+และสามารถทำ Operation ต่างๆ ได้ ดังนี้
+hash(key): คืนค่าผลลัพธ์การ hash แบบ Modulo-division  
+rehash(hkey): คืนค่าผลลัพธ์การ rehash
+กรณีที่มีการชนกันของข้อมูล โดยให้แก้ปัญหาการชนกันด้วยวิธี Linear Probing
+insert_data(student): ทำการเพิ่มข้อมูลออบเจ็กต์ student ตามตำแหน่งที่ได้จากการ hash หรือ rehash ได้
+เมื่อเพิ่มข้อมูลสำเร็จ ให้แสดงข้อความว่า
+Insert at index
+กรณีที่ข้อมูลเต็ม ให้แสดงข้อความว่า
+The list is full.  could not be inserted.
+search_data(std_id): คืนค่าออบเจ็กต์ student ที่มีรหัสนักศึกษาเป็น std_id
+พร้อมทั้งแสดงข้อความให้เห็นว่าพบข้อมูลของ std_id ที่ตำแหน่ง (index) ไหน
+Found at index
+กรณีไม่เจอข้อมูล ให้แสดงข้อความว่า
+ does not exist.
+นายปิ๊กและส้มฉุนทำงานเสร็จ ทั้งสองคนได้เรียกหัวหน้างานชื่อว่าท่านโอห์มมาตรวจงานที่ทั้ง 2 คนนั้นทำไว้ โดยที่ท่านโอห์มได้ทำการเอาโค้ดที่ทั้ง 2 คนได้สร้างขึ้นมา นำมาตรวจสอบความถูกต้องผ่านโค้ดด้านล่าง
+
+def main():
+    import json
+    size = int(input())
+    hashtable = ProbHash(size)
+    while True:
+        finish = input()
+        if finish == "Done":
+            break
+        condition, data = finish.split(" = ")
+        if condition == "I":
+            std_in = json.loads(data)
+            std = Student(std_in["ID"], std_in["Name"], std_in["GPA"])
+            hashtable.insert_data(std)
+        elif condition == "S":
+            print("------")
+            student = hashtable.search_data(int(data))
+            if student is not None:
+                student.print_details()
+            print("------")
+        else:
+            print("Invalid Condition!")
+main()
+
+Input Specification
+> 1 บรรทัด
+
+บรรทัดที่ 1: ขนาดของ Hash Table (จำนวนเต็ม)
+
+บรรทัดต่อมา: ข้อมูล
+
+Output Specification
+≥ 1 บรรทัด
+
+ผลลัพท์ของข้อมูลที่ใช้ insertData() หรือ searchData()
+
+Testcase 1
+input : 
+20
+I = {"ID": 66070001, "Name": "Kornchanok Chaemsilp", "GPA": 3.38}
+I = {"ID": 66070259, "Name": "Tonnam Huayhongthong", "GPA": 3.88}
+I = {"ID": 66070041, "Name": "Chalatphon Kaewon", "GPA": 4.00}
+I = {"ID": 66070013, "Name": "Kartpol Sucheewakul", "GPA": 2.25}
+S = 66070001
+S = 66070041
+S = 66070259
+S = 66070002
+Done
+output : 
+Insert 66070001 at index 1
+Insert 66070259 at index 19
+Insert 66070041 at index 2
+Insert 66070013 at index 13
+------
+Found 66070001 at index 1
+ID: 66070001
+Name: Kornchanok Chaemsilp
+GPA: 3.38
+------
+------
+Found 66070041 at index 2
+ID: 66070041
+Name: Chalatphon Kaewon
+GPA: 4.00
+------
+------
+Found 66070259 at index 19
+ID: 66070259
+Name: Tonnam Huayhongthong
+GPA: 3.88
+------
+------
+66070002 does not exist.
+------
+Testcase 2
+input : 
+10
+I = {"ID": 66070301, "Name": "Peerach Mincharoen", "GPA": 3.75}
+I = {"ID": 66070214, "Name": "Achira Suntonbooranasuk", "GPA": 3.25}
+I = {"ID": 66070185, "Name": "Witchayagorn Nakngam", "GPA": 3.75}
+I = {"ID": 66070091, "Name": "Thanya Woramongkol", "GPA": 4.00}
+I = {"ID": 66070180, "Name": "Worawich Choonpicharn", "GPA": 2.63}
+I = {"ID": 66070294, "Name": "Pongsapak Tangkaanan", "GPA": 2.88}
+I = {"ID": 66070165, "Name": "Pusrik Purimongkol", "GPA": 3.13}
+S = 66070165
+S = 66070301
+S = 66070088
+Done
+output : 
+Insert 66070301 at index 1
+Insert 66070214 at index 4
+Insert 66070185 at index 5
+Insert 66070091 at index 2
+Insert 66070180 at index 0
+Insert 66070294 at index 6
+Insert 66070165 at index 7
+------
+Found 66070165 at index 7
+ID: 66070165
+Name: Pusrik Purimongkol
+GPA: 3.13
+------
+------
+Found 66070301 at index 1
+ID: 66070301
+Name: Peerach Mincharoen
+GPA: 3.75
+------
+------
+66070088 does not exist.
+------
+Testcase 3
+input : 
+9
+I = {"ID": 66070123, "Name": "Pongphun Kaewpongpok", "GPA": 4.00}
+I = {"ID": 66070100, "Name": "Nawachart Ongcharoen", "GPA": 3.13}
+I = {"ID": 66070124, "Name": "Pongpisut Tupwong", "GPA": 3.25}
+I = {"ID": 66070108, "Name": "Boriboon Chamnanphol", "GPA": 3.50}
+I = {"ID": 66070162, "Name": "Phumphuridon Wongchan", "GPA": 3.13}
+I = {"ID": 66070200, "Name": "Sonrasamon Meepasee", "GPA": 3.63}
+I = {"ID": 66070113, "Name": "Panavat Thamcharoen", "GPA": 3.25}
+I = {"ID": 66070101, "Name": "Natthapong Wongsomsri", "GPA": 3.33}
+I = {"ID": 66070014, "Name": "Karn Suddee", "GPA": 3.50}
+I = {"ID": 66070004, "Name": "Kittidet Tojaitham", "GPA": 3.63}
+S = 66070004
+S = 66070014
+S = 66070123
+S = 66070200
+Done
+output : 
+Insert 66070123 at index 7
+Insert 66070100 at index 2
+Insert 66070124 at index 8
+Insert 66070108 at index 1
+Insert 66070162 at index 3
+Insert 66070200 at index 4
+Insert 66070113 at index 6
+Insert 66070101 at index 5
+Insert 66070014 at index 0
+The list is full. 66070004 could not be inserted.
+------
+66070004 does not exist.
+------
+------
+Found 66070014 at index 0
+ID: 66070014
+Name: Karn Suddee
+GPA: 3.50
+------
+------
+Found 66070123 at index 7
+ID: 66070123
+Name: Pongphun Kaewpongpok
+GPA: 4.00
+------
+------
+Found 66070200 at index 4
+ID: 66070200
+Name: Sonrasamon Meepasee
+GPA: 3.63
+------
+Testcase 4
+input : 
+6
+I = {"ID": 66070267, "Name": "Thanapat Saengwattanasiri", "GPA": 3.25}
+I = {"ID": 66070312, "Name": "Supakrit Srichoo", "GPA": 3.0}
+I = {"ID": 66070311, "Name": "Supakorn Vachirapoosit", "GPA": 3.5}
+I = {"ID": 66070224, "Name": "Arnuphap Mongkolsuktavi", "GPA": 3.5}
+I = {"ID": 66070164, "Name": "Puwarit sooyoung Jeong", "GPA": 2.75}
+I = {"ID": 66070293, "Name": "Phongnawich Ngamsuanplu", "GPA": 2.25}
+S = 66070164
+S = 66070165
+S = 66070224
+S = 66070267
+S = 66070293
+S = 66070311
+S = 66070313
+Done
+output : 
+Insert 66070267 at index 1
+Insert 66070312 at index 4
+Insert 66070311 at index 3
+Insert 66070224 at index 0
+Insert 66070164 at index 2
+Insert 66070293 at index 5
+------
+Found 66070164 at index 2
+ID: 66070164
+Name: Puwarit sooyoung Jeong
+GPA: 2.75
+------
+------
+66070165 does not exist.
+------
+------
+Found 66070224 at index 0
+ID: 66070224
+Name: Arnuphap Mongkolsuktavi
+GPA: 3.50
+------
+------
+Found 66070267 at index 1
+ID: 66070267
+Name: Thanapat Saengwattanasiri
+GPA: 3.25
+------
+------
+Found 66070293 at index 5
+ID: 66070293
+Name: Phongnawich Ngamsuanplu
+GPA: 2.25
+------
+------
+Found 66070311 at index 3
+ID: 66070311
+Name: Supakorn Vachirapoosit
+GPA: 3.50
+------
+------
+66070313 does not exist.
+------
+Testcase 5
+input : 
+4
+I = {"ID": 66070305, "Name": "Phuriphat Arunphaisan", "GPA": 3.5}
+I = {"ID": 66070153, "Name": "Phakin Pansook", "GPA": 2}
+I = {"ID": 66070166, "Name": "Manonthakorn Khunsuwan", "GPA": 3.13}
+I = {"ID": 66070162, "Name": "Phumphuridon Wongchan", "GPA": 3.88}
+S = 66070153
+S = 66070162
+S = 66070166
+S = 66070305
+Done
+output : 
+Insert 66070305 at index 1
+Insert 66070153 at index 2
+Insert 66070166 at index 3
+Insert 66070162 at index 0
+------
+Found 66070153 at index 2
+ID: 66070153
+Name: Phakin Pansook
+GPA: 2.00
+------
+------
+Found 66070162 at index 0
+ID: 66070162
+Name: Phumphuridon Wongchan
+GPA: 3.88
+------
+------
+Found 66070166 at index 3
+ID: 66070166
+Name: Manonthakorn Khunsuwan
+GPA: 3.13
+------
+------
+Found 66070305 at index 1
+ID: 66070305
+Name: Phuriphat Arunphaisan
+GPA: 3.50
+------
+Testcase 6
+input : 
+20
+I = {"ID": 66070207, "Name": "Siwapat Samantrakulchai", "GPA": 3.50}
+I = {"ID": 66070156, "Name": "Panupong Fogkrathok", "GPA": 0.63}
+I = {"ID": 66070159, "Name": "Poobes Inthaweero", "GPA": 1.63}
+I = {"ID": 66070162, "Name": "Phumphuridon Wongchan", "GPA": 2.63}
+I = {"ID": 66070263, "Name": "Tanakrit Suttipong", "GPA": 3.63}
+I = {"ID": 66070086, "Name": "Taratip Techatadadech", "GPA": 2.00}
+I = {"ID": 66070107, "Name": "Nijitpong Tipparak", "GPA": 2.50}
+I = {"ID": 66070275, "Name": "Nonthaphat Phumchareon", "GPA": 3.00}
+I = {"ID": 66070271, "Name": "Thitipat Sonprasertkul", "GPA": 3.50}
+I = {"ID": 66070098, "Name": "Noraset Buppha", "GPA": 2.50}
+I = {"ID": 66070120, "Name": "Pongsatorn Kitjetnee", "GPA": 1.50}
+I = {"ID": 66070014, "Name": "Karn Suddee", "GPA": 2.00}
+I = {"ID": 66070030, "Name": "Jirathip Kapanya", "GPA": 2.25}
+I = {"ID": 66070093, "Name": "Teerapat Tuanpromrat", "GPA": 3.13}
+I = {"ID": 66070158, "Name": "Pubeth Sriwattana", "GPA": 3.33}
+I = {"ID": 66070262, "Name": "Thanakrit Kittisurin", "GPA": 3.63}
+I = {"ID": 66070246, "Name": "Jasmine alysha Theseira", "GPA": 3.50}
+I = {"ID": 66070054, "Name": "Theetapat Sunghitakul", "GPA": 3.75}
+I = {"ID": 66070309, "Name": "Sarun Manpraphan", "GPA": 3.38}
+I = {"ID": 66070121, "Name": "Pongsatorn Sareeroop", "GPA": 2.88}
+S = 66070014
+S = 66070030
+S = 66070054
+S = 66070086
+S = 66070093
+S = 66070098
+S = 66070107
+S = 66070120
+S = 66070121
+S = 66070156
+S = 66070158
+S = 66070159
+S = 66070162
+S = 66070207
+S = 66070246
+S = 66070262
+S = 66070263
+S = 66070271
+S = 66070275
+S = 66070309
+Done
+output : 
+Insert 66070207 at index 7
+Insert 66070156 at index 16
+Insert 66070159 at index 19
+Insert 66070162 at index 2
+Insert 66070263 at index 3
+Insert 66070086 at index 6
+Insert 66070107 at index 8
+Insert 66070275 at index 15
+Insert 66070271 at index 11
+Insert 66070098 at index 18
+Insert 66070120 at index 0
+Insert 66070014 at index 14
+Insert 66070030 at index 10
+Insert 66070093 at index 13
+Insert 66070158 at index 1
+Insert 66070262 at index 4
+Insert 66070246 at index 9
+Insert 66070054 at index 17
+Insert 66070309 at index 12
+Insert 66070121 at index 5
+------
+Found 66070014 at index 14
+ID: 66070014
+Name: Karn Suddee
+GPA: 2.00
+------
+------
+Found 66070030 at index 10
+ID: 66070030
+Name: Jirathip Kapanya
+GPA: 2.25
+------
+------
+Found 66070054 at index 17
+ID: 66070054
+Name: Theetapat Sunghitakul
+GPA: 3.75
+------
+------
+Found 66070086 at index 6
+ID: 66070086
+Name: Taratip Techatadadech
+GPA: 2.00
+------
+------
+Found 66070093 at index 13
+ID: 66070093
+Name: Teerapat Tuanpromrat
+GPA: 3.13
+------
+------
+Found 66070098 at index 18
+ID: 66070098
+Name: Noraset Buppha
+GPA: 2.50
+------
+------
+Found 66070107 at index 8
+ID: 66070107
+Name: Nijitpong Tipparak
+GPA: 2.50
+------
+------
+Found 66070120 at index 0
+ID: 66070120
+Name: Pongsatorn Kitjetnee
+GPA: 1.50
+------
+------
+Found 66070121 at index 5
+ID: 66070121
+Name: Pongsatorn Sareeroop
+GPA: 2.88
+------
+------
+Found 66070156 at index 16
+ID: 66070156
+Name: Panupong Fogkrathok
+GPA: 0.63
+------
+------
+Found 66070158 at index 1
+ID: 66070158
+Name: Pubeth Sriwattana
+GPA: 3.33
+------
+------
+Found 66070159 at index 19
+ID: 66070159
+Name: Poobes Inthaweero
+GPA: 1.63
+------
+------
+Found 66070162 at index 2
+ID: 66070162
+Name: Phumphuridon Wongchan
+GPA: 2.63
+------
+------
+Found 66070207 at index 7
+ID: 66070207
+Name: Siwapat Samantrakulchai
+GPA: 3.50
+------
+------
+Found 66070246 at index 9
+ID: 66070246
+Name: Jasmine alysha Theseira
+GPA: 3.50
+------
+------
+Found 66070262 at index 4
+ID: 66070262
+Name: Thanakrit Kittisurin
+GPA: 3.63
+------
+------
+Found 66070263 at index 3
+ID: 66070263
+Name: Tanakrit Suttipong
+GPA: 3.63
+------
+------
+Found 66070271 at index 11
+ID: 66070271
+Name: Thitipat Sonprasertkul
+GPA: 3.50
+------
+------
+Found 66070275 at index 15
+ID: 66070275
+Name: Nonthaphat Phumchareon
+GPA: 3.00
+------
+------
+Found 66070309 at index 12
+ID: 66070309
+Name: Sarun Manpraphan
+GPA: 3.38
+------
+
+-------------------------------------------------------------------------------------------------------
+Lab 06.03 - Binary Search
+
+Timeout: 1 second
+Memory Limit: 32000 bytes
+
+Input Specification
+2 บรรทัด
+
+บรรทัดแรกเป็นข้อมูลในรูปแบบ Json
+บรรทัดที่ 2 เป็นชื่อที่ต้องการค้นหา
+Output Specification
+2 หรือ 5 บรรทัด ตามเงื่อนไขในโจทย์
+
+Testcase 1
+input : 
+[{"id": "68070027", "name": "Cholteerit Patcharadamrongkul", "gpa": 2.88}, {"id": "68070316", "name": "Sirithep Bordikarn", "gpa": 3.14}, {"id": "68070052", "name": "Thatchakorn Bunnin", "gpa": 4.0}]
+Sirithep Bordikarn
+output : 
+Found Sirithep Bordikarn at index 1
+ID: 68070316
+Name: Sirithep Bordikarn
+GPA: 3.14
+Comparisons times: 1
+Testcase 2
+input : 
+[{"id": "68076389","name": "Boonprasert Surakratanasakul","gpa": 4.0},{"id": "68070328","name": "Emma Pearson","gpa": 3.62},{"id": "68070077","name": "Napon Narkphan","gpa": 3.12},{"id": "68070145","name": "Purin Leuprasert","gpa": 3.38},{"id": "68070187","name": "Siritatiya Kanmaravanich","gpa": 2.62},{"id": "68070072","name": "Theerawat Russamewikai","gpa": 3.0},{"id": "68070153","name": "Yossawat Imjai","gpa": 3.1}]
+Purin Leuprasert
+output : 
+Found Purin Leuprasert at index 3
+ID: 68070145
+Name: Purin Leuprasert
+GPA: 3.38
+Comparisons times: 1
+Testcase 3
+input : 
+[{"id": "68076389","name": "Boonprasert Surakratanasakul","gpa": 4.0},{"id": "68070328","name": "Emma Pearson","gpa": 3.62},{"id": "68070077","name": "Napon Narkphan","gpa": 3.12},{"id": "68070145","name": "Purin Leuprasert","gpa": 3.38},{"id": "68070187","name": "Siritatiya Kanmaravanich","gpa": 2.62},{"id": "68070072","name": "Theerawat Russamewikai","gpa": 3.0},{"id": "68070153","name": "Yossawat Imjai","gpa": 3.1}]
+Sooksan Panichpapiboon
+output : 
+Sooksan Panichpapiboon does not exists.
+Comparisons times: 3
