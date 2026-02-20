@@ -1,21 +1,21 @@
+import json
+
 def isIntersect(a, b, c):
-    d = {}
+    set_a = set(a)
+    set_b = set(b)
+    set_c = set(c)
     
-    for x in a:
-        d[x] = 1
-    
-    for x in b:
-        if x in d:
-            d[x] = 2
-    
-    for x in c:
-        if x in d and d[x] == 2:
+    for item in set_a:
+        if item in set_b and item in set_c:
             return True
-    
+            
     return False
 
-input1 = list(map(int, input()[1:-1].split(',')))
-input2 = list(map(int, input()[1:-1].split(',')))
-input3 = list(map(int, input()[1:-1].split(',')))
+def main():
+    list_a = json.loads(input())
+    list_b = json.loads(input())
+    list_c = json.loads(input())
+    
+    print(isIntersect(list_a, list_b, list_c))
 
-print(isIntersect(input1, input2, input3))
+main()
