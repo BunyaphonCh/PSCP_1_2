@@ -1,3 +1,4 @@
+import json
 def insertionSort(lst, last):
     comparison = 0
     for i in range(1, last + 1):
@@ -13,3 +14,8 @@ def insertionSort(lst, last):
         lst[j + 1] = current_value
         print(lst)
     print("Comparison times:", comparison)
+def main():
+    data = json.loads(input())
+    last_index = int(input())
+    insertionSort(data, last_index)
+main()
