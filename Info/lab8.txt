@@ -1,0 +1,494 @@
+Labs 08.01 - Coin Exchange
+
+Timeout: 1 second
+Memory Limit: 32000 bytes
+นายเพชรขึ้นรถไฟจากสถานีหัวหมากมาเรียนทุกวันซึ่งราคาตั๋วรถไฟจากสถานีหัวหมากมายังสถานีหัวตะเข้นั้นราคา 3 บาท แต่ว่านายเพชรนั้นยื่นแบงค์ 20 บาทให้พี่พนักงานขายตั๋ว ด้วยความที่เป็นชั่วโมงเร่งด่วนพี่พนักงานขายตั๋วจึงได้เปิดสกิลพิเศษในการใช้ Greedy Algorithms ในทอนเงินให้กับนายเพชรโดยใช้จำนวนเหรียญน้อยสุดเพื่อความรวดเร็ว
+
+นายเพชรนั้นตกใจมากที่เห็นพี่พนักงานขายตั๋วนั้นทอนเงินให้ตนด้วยความรวดเร็ว นายเพชรจึงไปรวมทีมกับนายดรีมเพื่อที่จะสร้างฟังก์ชัน coinExchange(amount, coinList) เพื่อทำการคำนวณการทอนเหรียญสำหรับเงินจำนวน amount บาทขึ้นมา
+
+ทั้งคู่ได้สร้างฟังก์ชัน coinExchange(amount, coins) เพื่อทำการคำนวณการทอนเหรียญสำหรับเงินจำนวน amount บาท
+
+ให้ใช้แนวคิดการแก้ปัญหาด้วย Greedy algorithm ซึ่งพยายามทอนเงินโดยใช้จำนวนเหรียญน้อยๆ
+กำหนดให้เหรียญมีมูลค่าต่างๆ กัน ได้แก่ เหรียญ 10 บาท, 5 บาท, 2 บาท และ 1 บาท ตามลำดับ และอาจมีจำนวนเหรียญที่แตกต่างกันได้
+amount เป็นเลขจำนวนเต็ม แทนจำนวนเงินบาทที่ต้องการแลกเหรียญ
+coins เป็นข้อมูลประเภท Dict ที่เก็บจำนวนเหรียญที่มีมูลค่าต่างๆ เช่น
+coins = {10: 50, 5: 60, 2: 70, 1: 100}
+หมายถึง มีเหรียญ 10 บาท, 5 บาท, 2 บาท และ 1 บาท จำนวน 50, 60, 70 และ 100 เหรียญ ตามลำดับ
+ฟังก์ชันจะแสดงจำนวนเหรียญของเหรียญมูลค่าต่างๆ ตามที่โจทย์กำหนด
+กรณีที่จำนวนเหรียญไม่เพียงพอกับเงินที่ต้องการแลก โปรแกรมจะแสดงข้อความ "Coins are not enough"
+
+ในการโหลดข้อมูลเพื่อให้ข้อมูล Dictionary มีรูปแบบ dict<int, int> นายเพชรจะใช้ฟังก์ขันด้านล่างในการแปลงข้อมูล
+
+def convert_key(data):
+  """JSON"""
+  return {int(k): v for k, v in data.items()}
+
+def main():
+  import json
+  data = convert_key(json.loads(input()))
+  // Your code here
+
+main()
+
+Input Specification
+2 บรรทัด
+บรรทัดที่ 1: amount แทนจำนวนเงินบาทที่ต้องการแลกเหรียญ
+บรรทัดที่ 2: ข้อมูล JSON ที่เก็บจำนวนเหรียญมีรูปแบบดังนี้ dict<String, int>
+
+Output Specification
+2 หรือ 7 บรรทัดโดยที่
+
+บรรทัดที่ 1: จำนวนเงินรูปแบบดังนี้ Amount:
+บรรทัดที่ 2:
+    ถ้าจำนวนเงินไม่พอให้แสดงผลว่า "Coins are not enough"
+    ถ้าจำนวนเงินพอให้แสดงผลว่า "Coin exchange result" ,
+    แสดงว่าต้องใช้เหรียญแต่ละประเภทเท่าไรบ้างและจำนวนเหรียญที่ใช้
+
+input :
+127
+{"10": 10, "5": 10, "2": 10, "1": 10}
+
+output :
+
+Amount: 127
+Coin exchange result:
+  10 baht = 10 coins
+  5 baht = 5 coins
+  2 baht = 1 coins
+  1 baht = 0 coins
+Number of coins: 16
+
+input :
+249
+{"10": 10, "5": 10, "2": 10, "1": 10}
+
+output :
+Amount: 249
+Coins are not enough.
+
+input :
+58
+{"10": 6, "5": 3, "2": 4, "1": 3}
+
+output :
+Amount: 58
+Coin exchange result:
+  10 baht = 5 coins
+  5 baht = 1 coins
+  2 baht = 1 coins
+  1 baht = 1 coins
+Number of coins: 8
+
+input :
+17
+{"10": 0, "5": 1, "2": 2, "1": 10}
+
+output :
+Amount: 17
+Coin exchange result:
+  10 baht = 0 coins
+  5 baht = 1 coins
+  2 baht = 2 coins
+  1 baht = 8 coins
+Number of coins: 11
+
+input :
+236
+{"10": 10, "5": 0, "2": 30, "1": 100}
+
+output :
+Amount: 236
+Coin exchange result:
+  10 baht = 10 coins
+  5 baht = 0 coins
+  2 baht = 30 coins
+  1 baht = 76 coins
+Number of coins: 116
+
+input :
+260
+{"10": 10, "5": 0, "2": 30, "1": 100}
+
+output :
+Amount: 260
+Coin exchange result:
+  10 baht = 10 coins
+  5 baht = 0 coins
+  2 baht = 30 coins
+  1 baht = 100 coins
+Number of coins: 140
+
+input :
+261
+{"10": 10, "5": 0, "2": 30, "1": 100}
+
+output :
+Amount: 261
+Coins are not enough.
+
+-------------------------------------------------------------------------------------------------------
+
+Labs 08.02 - Item Class
+
+Timeout: 1 second
+Memory Limit: 32000 bytes
+สกาวเดือนได้ทำการแจกโบนัสให้พนักงานทุกคนที่ทำงานในบริษัทแล้วแต่แอพโดยรอบนี้สกาวเดือนนั้นไม่ได้เตรียมเงินใส่ซองปิดผนึกไว้จำนวน 5 ซอง แต่ว่าสกาวเดือนนั้นเตรียมสิ่งของต่างๆ ที่เธอได้ซื้อมาจากห้างสรรพสินค้าเพื่อที่จะให้พนักงานในบริษัทแล้วแต่แอพเล่นเกมส์หยิบของให้ได้มากที่สุดใน 10 วินาทีและสามารถบรรจุของที่หยิบได้ลงในกระเป๋าเพียงใบเดียวเท่านั้น
+
+นายปิ๊ก (หนึ่งในทีมนักพัฒนาแล้วแต่แอพ) ได้ทราบข่าวเรื่องที่สกาวเดือนจะแจกโบนัส นายปิ๊กเลยได้ไปบอกส้มฉุนกับท่านโอห์ม ทั้ง 3 คนเลยได้ได้ตกลงกันว่าจะเลือกหยิบสินค้าโดยให้ได้มูลค่ารวมมากที่สุดและหยิบแบบใช้ Greedy Algorithms
+
+ส้มฉุนเลยไปติดต่อกับพี่โฟล์คฝ่ายพัสดุเพื่อที่จะให้พี่โฟล์คไปสืบหารายชื่อของสิ่งของต่างๆ ที่คุณสกาวเดือนได้ซื้อมา เมื่อพี่โฟล์คไปสืบมาได้พี่แกจะส่งข้อมูลกลับมาเป็น list ที่เก็บอ็อบเจ็กสิ่งของที่สกาวเดือนไปซื้อมาโดยพี่โฟล์คได้ออกแบบคลาส Item ขึ้นมาในการเก็บข้อมูลของสินค้าแต่ละตัวซึ่งภายในคลาสจะเก็บข้อมูลชื่อ, ราคาและน้ำหนักของสินค้าประเภทนั้นๆ ซึ่งคลาสจะมีลักษณะดังนี้
+
+Attributes (คุณลักษณะ) ได้แก่
+name คือชื่อของสินค้า
+price คือราคาของสินค้า (จำนวนจริง)
+weight คือน้ำหนักของสินค้า (จำนวนเด็ม)
+Methods (เมธอด) ได้แก่
+.get_name() ทำหน้าที่ส่งค่า name
+.get_price() ทำหน้าที่ส่งค่า price
+.get_weight() ทำหน้าที่ส่งค่า weight
+.get_cost() คำนวณหาค่าที่ใช้ในการเลือกสินค้าตามแนวคิด Greedy algorithm
+เช่น เลือกจากราคาของสินค้าต่อน้ำหนัก เป็นต้น
+
+ใช้โค้ดด้านล่างในการเช็คผลลัพธ์
+def main():
+  import json
+  item_in = json.loads(input())
+  item = Item(item_in["name"], item_in["price"], item_in["weight"])
+  print(item.get_name(), item.get_price(), item.get_weight(), sep='\n')
+
+main()
+
+Input Specification
+1 บรรทัด
+ข้อมูล JSON
+
+Output Specification
+3 บรรทัด
+ผลลัพธ์จากการเรียกแต่ละ get()
+
+input :
+{"name": "Stereo", "price": 3000, "weight": 3}
+
+output :
+Stereo
+3000
+3
+
+input :
+{"name": "Laptop", "price": 2000, "weight": 2}
+
+output :
+Laptop
+2000
+2
+
+input :
+{"name": "Guitar", "price": 1500, "weight": 1.5}
+
+output :
+Guitar
+1500
+1.5
+
+-------------------------------------------------------------------------------------------------------
+
+Labs 08.03 - Knapsack
+
+Timeout: 1 second
+Memory Limit: 32000 bytes
+เมื่อพี่โฟล์คสร้างคลาส Item เสร็จก็ได้ทำการเพิ่มข้อมูลของสินค้าที่สกาวเดือนได้ซื้อมาลงไปในคลาส Item และเก็บข้อมูลทั้งหมดไว้ในลิสต์เพื่อที่จะเอาไว้ส่งต่อให้ส้มฉุน
+
+ต่อมาจะเป็นหน้าที่ขของนายปิ๊กและเพื่อนๆ ของเขาที่จะรับผิดชอบในการที่จะเขียนฟังก์ชันที่จะคำนวณว่านายปิ๊กควรจะหยิบสินค้าชนิดไหนเป็นอันดับแรกเพื่อให้ได้มูลค่ารวมของสินค้าในกระเป๋ามากที่สุด
+
+นายปิ๊กจะสร้างฟังก์ชัน knapsack(amount, itemList) เพื่อทำการหยิบของจาก itemList ใส่ในกระเป๋าที่สามารถรองรับน้ำหนักได้ amount กก.
+ให้ใช้แนวคิดการแก้ปัญหาด้วย Greedy algorithm เพื่อพยายามหยิบของให้ได้มูลค่ารวมมากที่สุด
+กำหนดให้สินค้ามีมูลค่าและน้ำหนักที่แตกต่างกัน เช่น กีต้าร์ ราคา 5,500 บาท มีน้ำหนัก 3 กก. เป็นต้น
+amount เป็นเลขจำนวนเต็ม แทนน้ำหนักที่กระเป๋าสามารถรองรับได้
+itemList เป็นลิสต์ที่เก็บอ็อบเจ็กสินค้าที่อยู่ในร้าน โดยอ็อบเจ็กสินค้าจะมี attribute ต่างๆ ได้แก่ ชื่อสินค้า (name), ราคาสินค้า (price) และน้ำหนักสินค้า (weight)
+ฟังก์ชันจะแสดง รายการสินค้าที่หยิบใส่ในกระเป๋า และมูลค่าสินค้ารวม
+ถ้าหากว่าค่าที่ใช้ในการเลือกสินค้าเท่ากันให้เลือกสมาชิกตัวแรกสุดจากข้อมูลที่รับเข้ามาก่อน
+เมื่อนายปิ๊กสร้างฟังก์ชันเสร็จ นายปิ๊กจะเอาโค้ดฟังก์ชันที่นายปิ๊กสร้างขึ้นมาแล้วเอาไปให้ท่านโอห์มตรวจผ่านโค้ดด้านล่าง
+
+def main():
+  import json
+  items = []
+  num_items = int(input())
+  while num_items != 0:
+    item_in = json.loads(input())
+    items.append(Item(item_in['name'], item_in['price'], item_in['weight']))
+    num_items = num_items - 1
+    knapsack_capacity = float(input())
+    knapsack(items, knapsack_capacity)
+main()
+
+Input Specification
+N + 2 บรรทัด
+บรรทัดที่ 1 : จำนวนของสินค้าทั้งหมด
+บรรทัดที่ N : ข้อมูลในรูปแบบ JSON
+บรรทัดที่ N + 1 : น้ำหนักที่กระเป๋าสามารถรองรับได้
+
+Output Specification
+N + 2 บรรทัด
+บรรทัดที่ 1 : น้ำหนักที่กระเป๋าสามารถรองรับได้
+บรรทัดที่ N : ชื่อสินค้า ราคาสินค้า น้ำหนักสินค้า ที่อยู่ในกระเป๋า
+บรรทัดที่ N + 1 : ยอดรวมราคาสินค้าที่อยู่ในกระเป๋า
+
+input :
+3
+{ "name": "Stereo", "price": 3000, "weight": 3 }
+{ "name": "Laptop", "price": 2000, "weight": 2 }
+{ "name": "Guitar", "price": 1500, "weight": 1.5 }
+3.5
+
+output :
+Knapsack Size: 3.5 kg
+===============================
+Stereo -> 3 kg -> 3000 THB
+Total: 3000 THB
+
+input :
+5
+{ "name": "Tablet", "price": 7000, "weight": 0.5 }
+{ "name": "Perfume", "price": 6000, "weight": 0.5 }
+{ "name": "Guitar", "price": 9000, "weight": 1 }
+{ "name": "Air Purifier", "price": 9000, "weight": 2 }
+{ "name": "Watch", "price": 8000, "weight": 0.5 }
+3
+
+output :
+Knapsack Size: 3.0 kg
+===============================
+Watch -> 0.5 kg -> 8000 THB
+Tablet -> 0.5 kg -> 7000 THB
+Perfume -> 0.5 kg -> 6000 THB
+Guitar -> 1 kg -> 9000 THB
+Total: 30000 THB
+
+input :
+3
+{ "name": "Gold Bar", "price": 1000000, "weight": 50 }
+{ "name": "Feather", "price": 1, "weight": 0.001 }
+{ "name": "Diamond", "price": 500000, "weight": 0.01 }
+100
+
+output :
+Knapsack Size: 100.0 kg
+===============================
+Diamond -> 0.01 kg -> 500000 THB
+Gold Bar -> 50 kg -> 1000000 THB
+Feather -> 0.001 kg -> 1 THB
+Total: 1500001 THB
+
+input :
+1
+{ "name": "Brick", "price": 5, "weight": 100 }
+10
+
+output :
+Knapsack Size: 10.0 kg
+===============================
+Total: 0 THB
+
+input :
+3
+{ "name": "Backpack", "price": 50, "weight": 1.5 }
+{ "name": "Flashlight", "price": 20, "weight": 0.3 }
+{ "name": "First Aid Kit", "price": 30, "weight": 0.8 }
+3.2
+
+output :
+Knapsack Size: 3.2 kg
+===============================
+Flashlight -> 0.3 kg -> 20 THB
+First Aid Kit -> 0.8 kg -> 30 THB
+Backpack -> 1.5 kg -> 50 THB
+Total: 100 THB
+
+input :
+5
+{ "name": "Tent", "price": 200, "weight": 4 }
+{ "name": "Sleeping Bag", "price": 100, "weight": 2 }
+{ "name": "Camp Stove", "price": 80, "weight": 1 }
+{ "name": "Hiking Boots", "price": 60, "weight": 1.5 }
+{ "name": "Water Filter", "price": 40, "weight": 0.5 }
+8
+
+output :
+Knapsack Size: 8.0 kg
+===============================
+Camp Stove -> 1 kg -> 80 THB
+Water Filter -> 0.5 kg -> 40 THB
+Tent -> 4 kg -> 200 THB
+Sleeping Bag -> 2 kg -> 100 THB
+Total: 420 THB
+
+input :
+6
+{ "name": "Sweater", "price": 30, "weight": 0.7 }
+{ "name": "Jeans", "price": 40, "weight": 0.8 }
+{ "name": "T-Shirt", "price": 15, "weight": 0.3 }
+{ "name": "Sneakers", "price": 50, "weight": 1 }
+{ "name": "Hat", "price": 20, "weight": 0.2 }
+{ "name": "Sunglasses", "price": 25, "weight": 0.1 }
+3.5
+
+output :
+Knapsack Size: 3.5 kg
+===============================
+Sunglasses -> 0.1 kg -> 25 THB
+Hat -> 0.2 kg -> 20 THB
+Jeans -> 0.8 kg -> 40 THB
+T-Shirt -> 0.3 kg -> 15 THB
+Sneakers -> 1 kg -> 50 THB
+Sweater -> 0.7 kg -> 30 THB
+Total: 180 THB
+
+-------------------------------------------------------------------------------------------------------
+
+Labs 08.04 - Set Covering
+
+Timeout: 1 second
+Memory Limit: 32000 bytes
+
+แอพพลิเคชั่นสั่งอาหารบนโทรศัพท์มือถือตัวใหม่มีชื่อว่า "แล้วแต่แอพ" ซึ่งในแต่ละครั้งที่ใช้งาน แอพพลิเคชัน นี้จะสุ่มเลือกเมนูอาหารมาให้ผู้ใช้งานเพียง 1 อย่างโดยอัตโนมัติ และผู้ใช้งานจะต้องสั่งเมนูอาหารที่แอพพลิเคชันนี้สุ่มเลือกมาให้เท่านั้น แอพพลิเคชันจะสุ่มเลือกเมนูอาหารแต่ละอย่างด้วยความน่าจะเป็น
+
+สกาวเดือนต้องการโฆษณาแอพพลิเคชั่นสั่งอาหารแล้วแต่แอพในประเทศสหรัฐอเมริกาที่ West Coast ตอนกลางเนื่องจากว่ามีคนไทยอยู่เยอะมาก (ราวๆ 200,000++ คน) ซึ่งมีนายฟลุ๊คกับเซิณทำงานอยู่ที่ฝ่ายการตลาดและโฆษณาของบริษัทแล้วแต่แอพจำกัด สกาวเดือนเลยได้ไปบอก 2 คนนี้ให้ทั้งคู่กระจายข่าวสารและโฆษณาแล้วแต่แอพไปทางช่องวิทยุต่างๆ โดยมีเงื่อนไขคือว่าต้องใช้จำนวนสถานทีวิทยุที่น้อยที่สุดเพื่อประหยัดค่าใช้จ่าย
+
+นายฟลุ๊คเลยได้ตกลงกับนายเซิณว่าจะเลือกสถานีวิทยุที่ครอบครุมเมืองใน California มากที่สุดเช่นสมมุติมีสถานีวิทยุ 3 สถานี และมีเมืองทั้งหมดดังนี้ {San Franscisco, San Jose, Sacramento, Fresno, Bakersfield}
+สถานี A ครอบครุมเมือง San Franscisco, San Jose, Sacramento, Fresno, Bakersfield
+สถานี B ครอบครุมเมือง San Franscisco, San Jose, Sacramento
+สถานี C ครอบครุมเมือง Fresno, Bakersfield, San Jose
+นายฟลุ๊คจะเลือกสถานี A เป็นสถานีเดียว เพราะว่าจ่ายค่าโฆษณาไปให้สถานีเดียวแต่ครอบครุมเมืองถึง 5 เมือง
+
+แต่ว่าอีกกรณีนึง ถ้าเพิ่มเมือง Reno เข้ามา {San Franscisco, San Jose, Sacramento, Fresno, Bakersfield, Reno} และมีสถานีดังนี้
+สถานี A ครอบครุมเมือง San Franscisco, San Jose, Sacramento, Fresno, Bakersfield
+สถานี B ครอบครุมเมือง San Franscisco, San Jose, Sacramento, Reno
+สถานี C ครอบครุมเมือง Fresno, Bakersfield, San Jose
+นายฟลุ๊คจะต้องเลือกสถานี A และ B เพราะว่าสถานี A ครอบครุมเมืองเกือบทั้งหมดแต่ไม่ครอบครุมเมือง Reno, สถานี B ครอบครุมเมือง Reno นายฟลุ๊คจึงจะต้องเลือก 2 สถานีเพื่อให้ครอบครุมเมืองทุกเมืองที่นายฟลุ๊คต้องการจะโฆษณา
+เมื่อฟลุ๊คกับเซิณคุยกันเสร็จ เซิณก็ได้ทำการสร้างฟังก์ชัน ฟังก์ชัน findStations(stations) เพื่อทำการเลือกสถานีวิทยุ จาก stationDict เพื่อทำการโฆษณาสินค้าของบริษัทให้ครอบคลุมทุกพื้นที่โดยรายละเอียดของฟังก์ชันมีดังนี้
+​ให้ใช้แนวคิดการแก้ปัญหาด้วย Greedy algorithm เพื่อพยายามเลือกสถานีวิทยุให้น้อยที่สุดและครอบคลุมพื้นที่การโฆษณาทั้งหมด
+stations เป็น Dictionary ที่มี key เป็นชื่อสถานีวิทยุ และมี value เป็นลิสต์ของพื้นที่ที่สถานีนั้นครอบคลุม เช่น
+
+ station_dict = {
+  ‘A’ : [‘San Francisco’, ‘San Jose’, ‘Sacramento’, 'Fresno', 'Bakersfield', 'Reno'],
+  ‘B’ : [‘San Francisco’, ‘San Jose’, ‘Sacramento’, 'Reno'],
+  ‘C’ : [‘Fresno’, ‘San Jose’, ‘Bakersfield’]
+  }
+
+FUN FACT:
+ซิลิคอนวัลเลย์ (Silicon Valley) ตั้งอยู่ทางตอนใต้ของพื้นที่อ่าวซานฟรานซิสโก (San Francisco Bay Area) หรือเบย์แอเรีย ทางตอนเหนือของมลรัฐแคลิฟอร์เนีย ประเทศสหรัฐอเมริกา ​เมืองหลักของซิลิคอนวัลเลย์คือเมืองซานโฮเซ (San Jose) บริษัทเทคโนโลยีชั้นนำหลายแห่งมีสำนักงานใหญ่อยู่ในซิลิคอนวัลเลย์ เช่น Apple, Google, Facebook, Tesla, Intel, HP, Cisco, Oracle, Netflix, Adobe, Yahoo และอื่นๆ อีกมากมาย
+
+ชื่อ "ซิลิคอนวัลเลย์" มาจากการผสมผสานระหว่างคำว่า "ซิลิคอน" หมายถึงแร่ในการสร้างหน่วยความจำในระบบคอมพิวเตอร์ และ "วัลเลย์" หมายถึง หุบเขา ตั้งชื่อตามหุบเขาซานตา คลารา (Santa Clara Valley) ที่ตั้งอยู่ในบริเวณนั้น
+
+เมือง Fremont มีประชากรไทยอาศัยอยู่มากที่สุดใน Bay Area ประมาณ 10,000 คน เมืองนี้มีร้านอาหารไทย ร้านค้าไทย และวัดไทยมากมาย
+ 
+ 
+Input Specification
+2+n บรรทัด
+บรรทัดที่ 1 รายชื่อเมืองทั้งหมด (เป็น List ที่อยู่ในรูปแบบ String)
+
+บรรทัดที่ 2 จำนวนสถานีวิทยุทั้งหมด (n: จำนวนเต็ม)
+
+บรรทัดที่ 3 ถึง n ข้อมูลของสถานีวิทยุเป็น JSON ประกอบไปด้วยชื่อของเมืองและรายชื่อของสถานีวิทยุที่ครอบครุมถูกเก็บใน list
+
+Output Specification
+1 บรรทัด
+list ของสถานีวิทยุที่ดีที่สุด โดยถูกเรียงลำดับตามตัวอักษรแล้ว
+
+input :
+["San Francisco", "San Jose", "Sacramento", "Fresno", "Bakersfield", "Reno"]
+3
+{"Name": "A", "Cities": ["San Francisco", "San Jose", "Sacramento", "Fresno", "Bakersfield"]}
+{"Name": "B", "Cities": ["San Francisco", "San Jose", "Sacramento", "Reno"]}
+{"Name": "C", "Cities": ["San Jose", "Fresno", "Bakersfield"]}
+
+output :
+['A', 'B']
+
+input :
+["San Francisco", "San Jose", "Sacramento", "Fresno", "Bakersfield"]
+3
+{"Name": "A", "Cities": ["San Francisco", "San Jose", "Sacramento", "Fresno", "Bakersfield"]}
+{"Name": "B", "Cities": ["San Francisco", "San Jose", "Sacramento"]}
+{"Name": "C", "Cities": ["San Jose", "Fresno", "Bakersfield"]}
+
+output :
+['A']
+
+input :
+["San Francisco", "San Jose", "Los Angeles", "Sacramento", "San Diego", "Las Vegas", "Reno", "Phoenix"]
+5
+{"Name": "HuayHongThong FM", "Cities": ["Sacramento", "San Jose", "Phoenix", "Los Angeles", "Reno"]}
+{"Name": "Tangkaanan Tunes", "Cities": ["Reno", "Sacramento", "Las Vegas"]}
+{"Name": "OngCharoen Station", "Cities": ["Sacramento", "Las Vegas", "Los Angeles"]}
+{"Name": "Tuanpromrat Radio Ga Ga", "Cities": ["San Francisco", "San Jose", "Las Vegas", "San Diego", "Sacramento"]}
+{"Name": "WCRadio", "Cities": ["Reno", "San Diego", "San Francisco", "Los Angeles", "San Jose"]}
+
+output :
+['HuayHongThong FM', 'Tuanpromrat Radio Ga Ga']
+
+input :
+["San Francisco", "San Jose", "Los Angeles", "Sacramento", "San Diego", "Las Vegas", "Reno", "Phoenix"]
+7
+{"Name": "Nakngam Vibe", "Cities": ["Reno"]}
+{"Name": "Kaewpongpok Tunes", "Cities": ["Las Vegas", "Phoenix"]}
+{"Name": "Wongsomsri Radio", "Cities": ["Reno", "Phoenix", "Las Vegas"]}
+{"Name": "Mincharoen FM", "Cities": ["Los Angeles", "Sacramento"]}
+{"Name": "Purimongkol Station", "Cities": ["San Francisco"]}
+{"Name": "Mongkolsuktavi Tunes", "Cities": ["Reno", "San Jose", "Las Vegas"]}
+{"Name": "Wongchan AM", "Cities": ["San Jose", "Reno"]}
+
+output :
+['Mincharoen FM', 'Mongkolsuktavi Tunes', 'Purimongkol Station', 'Wongsomsri Radio']
+
+input :
+["San Francisco", "San Jose", "Los Angeles", "Sacramento", "Las Vegas", "Reno", "Phoenix"]
+5
+{"Name": "Manpraphan Pick", "Cities": ["Sacramento", "Reno", "Las Vegas"]}
+{"Name": "Samantrakulchai Tunes", "Cities": ["San Francisco", "San Jose", "Sacramento", "Los Angeles", "Reno"]}
+{"Name": "Pancome POP Radio", "Cities": ["Reno", "Phoenix", "Las Vegas"]}
+{"Name": "Mongkolrat Rock", "Cities": ["San Jose"]}
+{"Name": "Ngamgetsook FM", "Cities": ["Los Angeles", "Las Vegas", "Phoenix"]}
+
+output :
+['Pancome POP Radio', 'Samantrakulchai Tunes']
+
+input :
+["San Jose", "Fresno", "Bakersfield"]
+3
+{"Name": "A", "Cities": ["San Francisco", "San Jose", "Sacramento", "Fresno", "Bakersfield"]}
+{"Name": "B", "Cities": ["San Francisco", "San Jose", "Sacramento", "Reno"]}
+{"Name": "C", "Cities": ["San Jose", "Fresno", "Bakersfield"]}
+
+output :
+['A']
+
+input :
+["New York"]
+3
+{"Name": "A", "Cities": ["San Francisco", "San Jose", "Sacramento", "Fresno", "Bakersfield"]}
+{"Name": "B", "Cities": ["San Francisco", "San Jose", "Sacramento", "Reno"]}
+{"Name": "C", "Cities": ["San Jose", "Fresno", "Bakersfield"]}
+
+output :
+[]
+
+input :
+["Reno"]
+3
+{"Name": "A", "Cities": ["San Francisco", "San Jose", "Sacramento", "Fresno", "Bakersfield"]}
+{"Name": "B", "Cities": ["San Francisco", "San Jose", "Sacramento", "Reno"]}
+{"Name": "C", "Cities": ["San Jose", "Fresno", "Bakersfield"]}
+
+output :
+['B']
+
+input :
+["Reno", "Anaheim"]
+3
+{"Name": "A", "Cities": ["San Francisco", "San Jose", "Sacramento", "Fresno", "Bakersfield"]}
+{"Name": "B", "Cities": ["San Francisco", "San Jose", "Sacramento", "Reno"]}
+{"Name": "C", "Cities": ["San Jose", "Fresno", "Bakersfield", "Anaheim"]}
+
+output :
+['B', 'C']
