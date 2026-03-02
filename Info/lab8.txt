@@ -49,7 +49,6 @@ input :
 {"10": 10, "5": 10, "2": 10, "1": 10}
 
 output :
-
 Amount: 127
 Coin exchange result:
   10 baht = 10 coins
