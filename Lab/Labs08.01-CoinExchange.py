@@ -2,28 +2,33 @@ import json
 
 def coinExchange(amount, coins):
     print(f'Amount: {amount}')
-    keys = sorted(list(coins.keys()),reverse=True)
-    values = sorted(list(coins.values()),reverse=True)
-    count = 0
-    use = 0
+    # keys = sorted(list(coins.keys()),reverse=True)
+    keys = list(coins.keys())
+    values = list(coins.values())
+    print(keys)
+    print('fuc')
     cal = int(amount / keys[0])
+    count = 0
     if cal > values[0]:
-        use = values[0]
-    else:
-        use = cal
-    count += use
+        cal = values[0]
+    all = cal * keys[0]
+    left = amount - all
+    count += cal
     print('Coin exchange result:')
-    print(f'  {keys[0]} baht = {values[0]} coins')
-    next = amount - (use * keys[0])
+    print(f'  {keys[0]} baht = {cal} coins')
     for i in range(1,len(keys)):
-        cal = int(next / keys[i])
-        if cal > values[i]:
-            use = values[i]
-        else:
-            use = cal
-        print(f'  {keys[i]} baht = {use} coins')
-        count += use
-        next = next - (use * keys[i])
+        cal2 = int(left / keys[i])
+        if cal2 > values[i]:
+            cal2 = values[i]
+        all = cal2 * keys[i]
+        left = left - all
+        if left < 0:
+            print('Coins are not enough.')
+            break
+        count += cal2
+        print(f'  {keys[i]} baht = {cal2} coins')
+        if left == 0:
+            break
     print(f'Number of coins: {count}')
 
 def convert_key(data):
