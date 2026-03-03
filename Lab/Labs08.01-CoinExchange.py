@@ -1,35 +1,24 @@
 import json
 
-def coinExchange(amount, coins):
-    print(f'Amount: {amount}')
-    # keys = sorted(list(coins.keys()),reverse=True)
-    keys = list(coins.keys())
-    values = list(coins.values())
-    print(keys)
-    print('fuc')
-    cal = int(amount / keys[0])
+def coinExchange(amount, coins): # {"10": 10, "5": 10, "2": 10, "1": 10}
+    print(f'Amount: {amount}') # 127
+    keys = list(coins.keys()) # [10, 5, 2, 1]
+    results = [] # เก็บคำตอบ
+    left = amount # 127
     count = 0
-    if cal > values[0]:
-        cal = values[0]
-    all = cal * keys[0]
-    left = amount - all
-    count += cal
-    print('Coin exchange result:')
-    print(f'  {keys[0]} baht = {cal} coins')
-    for i in range(1,len(keys)):
-        cal2 = int(left / keys[i])
-        if cal2 > values[i]:
-            cal2 = values[i]
-        all = cal2 * keys[i]
-        left = left - all
-        if left < 0:
-            print('Coins are not enough.')
-            break
-        count += cal2
-        print(f'  {keys[i]} baht = {cal2} coins')
-        if left == 0:
-            break
-    print(f'Number of coins: {count}')
+    for key in keys: # 10, 5, 2, 1 
+        available = coins[key] # ค่า value 10, 10, 10, 10
+        use = min(int(left / key), available) # 127 / 10 vs 10 |
+        left = left - (use * key) # 127 - (10 * 10) = 27 |
+        results.append((key, use)) # 10, 10 |
+        count += use # 10 |
+    if left > 0: # ถ้าวนครบเเล้ว ค่ายังมากกว่า 0 อยู่ เเปลว่าเหรียญที่มีพอจะเเลกได้เป๊ะๆ
+        print('Coins are not enough.')
+    else:
+        print('Coin exchange result:')
+        for key, use in results: # วนลูปเเสดงผล
+            print(f'  {key} baht = {use} coins')
+        print(f'Number of coins: {count}')
 
 def convert_key(data):
     return {int(k): v for k, v in data.items()}
