@@ -1,57 +1,36 @@
 import json
 
-def coinExchangeV2(amount, coins):
-    print(f'Amount: {amount}')
-    
-    coin_values = sorted([int(k) for k in coins.keys()], reverse=True)
-    coin_counts = {int(k): v for k, v in coins.items()}
-    
-    dp = [float('inf')] * (amount + 1)
-    dp[0] = 0
-    choice = [-1] * (amount + 1)
-    
-    for i in range(1, amount + 1):
-        for coin in coin_values:
-            if i >= coin and dp[i - coin] != float('inf'):
-                if dp[i - coin] + 1 < dp[i]:
-                    dp[i] = dp[i - coin] + 1
-                    choice[i] = coin
-    
-    if dp[amount] == float('inf'):
-        print('Can not exchange.')
-        return
-    
-    result = {coin: 0 for coin in coin_values}
-    current = amount
-    
-    while current > 0:
-        coin_used = choice[current]
-        if coin_used == -1:
-            print('Can not exchange.')
-            return
-        result[coin_used] += 1
-        current -= coin_used
-    
-    valid = True
-    for coin in coin_values:
-        if result[coin] > coin_counts[coin]:
-            valid = False
-            break
-    
-    if not valid:
-        print('Can not exchange.')
-        return
-    
-    print('Coin exchange result:')
-    total = 0
-    for coin in coin_values:
-        print(f'  {coin} baht = {result[coin]} coins')
-        total += result[coin]
-    print(f'Number of coins: {total}')
-
 def main():
     amount = int(input())
-    coins = json.loads(input())
-    coinExchangeV2(amount, coins)
+    coins_dict = json.loads(input())
+    
+    coin_values = sorted([int(k) for k in coins_dict.keys()], reverse=True)
+
+    dp = {0: (0,) * len(coin_values)}
+
+    for j, v in enumerate(coin_values):
+        limit = int(coins_dict[str(v)])
+        for i in sorted(dp.keys(), reverse=True):
+            for k in range(1, limit + 1):
+                nxt = i + k * v
+                if nxt > amount: 
+                    break
+                
+                new_counts = list(dp[i])
+                new_counts[j] += k
+                new_res = tuple(new_counts)
+                
+                if nxt not in dp or sum(new_res) < sum(dp[nxt]) or (sum(new_res) == sum(dp[nxt]) and new_res > dp[nxt]):
+                    dp[nxt] = new_res
+
+    print(f"Amount: {amount}")
+    if amount not in dp:
+        print("Can not exchange.")
+    else:
+        print("Coin exchange result:")
+        res = dp[amount]
+        for val, count in zip(coin_values, res):
+            print(f"  {val} baht = {count} coins")
+        print(f"Number of coins: {sum(res)}")
 
 main()
